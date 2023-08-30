@@ -1,26 +1,27 @@
 <?php
 namespace IteratorExample;
 
-use JetBrains\PhpStorm\Pure;
+use ExceptionExample\InvalidNumberException;
+use Iterator;
 
 /**
  * My iterator class
  *
  * @category Iterator_Class
  * @package  Iterator
- * @author   Csenge Dobo <csenge_dobo@epam.com>
+ * @author   Csenge Dobo <csengedobo@epam.com>
  * @license  PHP License 8.1.12
  * @link     https://github.com/obodegnecs/advanced-php
  */
-class SortedArrayIterator implements \Iterator
+class SortedArrayIterator implements Iterator
 {
     /**
      * The array to iterate over
      *
      * @var array
      */
-    private array $_array;
-    private int $_index = 0;
+    private array $array;
+    private int $index = 0;
 
     /**
      * Initialize array elements in ascending order
@@ -29,8 +30,14 @@ class SortedArrayIterator implements \Iterator
      */
     public function __construct(array $array)
     {
-        $this->_array = $array;
-        sort($this->_array);
+        foreach ($array as $item) {
+            if (!is_int($item) || $item < 0) {
+                throw new InvalidNumberException($item);
+            }
+        }
+
+        $this->array = $array;
+        sort($this->array);
     }
 
     /**
@@ -38,9 +45,9 @@ class SortedArrayIterator implements \Iterator
      *
      * @return mixed Current value
      */
-    #[Pure] public function current(): mixed
+    public function current(): mixed
     {
-        return $this->_array[$this->key()];
+        return $this->array[$this->key()];
     }
 
     /**
@@ -50,7 +57,7 @@ class SortedArrayIterator implements \Iterator
      */
     public function next(): void
     {
-        $this->_index++;
+        $this->index++;
     }
 
     /**
@@ -60,7 +67,7 @@ class SortedArrayIterator implements \Iterator
      */
     public function key(): int
     {
-        return $this->_index;
+        return $this->index;
     }
 
     /**
@@ -68,7 +75,7 @@ class SortedArrayIterator implements \Iterator
      *
      * @return bool Is the current index valid
      */
-    #[Pure] public function valid(): bool
+    public function valid(): bool
     {
         return isset($this->array[$this->key()]);
     }
@@ -80,6 +87,6 @@ class SortedArrayIterator implements \Iterator
      */
     public function rewind(): void
     {
-        $this->_index = 0;
+        $this->index = 0;
     }
 }
