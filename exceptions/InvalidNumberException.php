@@ -27,4 +27,3 @@ class InvalidNumberException extends InvalidArgumentException
         parent::__construct($msg, 0, $previous);
     }
 }
-

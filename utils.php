@@ -56,3 +56,15 @@ function printIterator(Iterator $iterator): void
 
     $iterator->rewind();
 }
+
+function randomNumbersWithGenerator(int $num): Generator
+{
+    for ($i = 0; $i < $num; $i++) {
+        yield rand(0, 999);
+    }
+}
+
+function printMemoryUsage(): void
+{
+    echo "Memory usage: " . number_format(memory_get_usage()/1024, 2, ".", " ") . " KB\n";
+}
