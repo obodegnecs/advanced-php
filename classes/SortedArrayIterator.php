@@ -89,4 +89,23 @@ class SortedArrayIterator implements Iterator
     {
         $this->index = 0;
     }
+
+    /**
+     * Filter out not positive integer values in array
+     *
+     * @param array $arr an array
+     *
+     * @return SortedArrayIterator
+     */
+    public static function withPositiveIntegersOnly(array $arr): SortedArrayIterator
+    {
+        return new SortedArrayIterator(
+            array_filter(
+                array_filter($arr, 'is_int'),
+                function ($i) {
+                    return $i >= 0;
+                }
+            )
+        );
+    }
 }
